@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black">
+
+    <!-- 视频播放器 -->
+    <androidx.media3.ui.PlayerView
+        android:id="@+id/player_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:resize_mode="fit"
+        app:show_buffering="when_playing"
+        app:use_controller="false"
+        app:surface_type="surface_view"/>
+
+    <!-- 封面图（加载中显示） -->
+    <ImageView
+        android:id="@+id/iv_cover"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:transitionName="shared_cover"/>
+
+    <!-- 双击点赞动画层 -->
+    <com.example.tiktok.ui.view.LikeAnimationView
+        android:id="@+id/like_animation_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginEnd="60dp"
+        android:layout_marginBottom="110dp"
+        android:layout_marginTop="60dp"/>
+
+    <!-- 暂停图标 -->
+    <ImageView
+        android:id="@+id/iv_pause"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_centerInParent="true"
+        android:src="@mipmap/ic_pause"
+        android:visibility="gone"
+        android:alpha="0.8"/>
+
+    <!-- 加载中 -->
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_centerInParent="true"
+        android:visibility="gone"/>
+
+    <!-- 右侧功能区 -->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true">
+
+        <!--头像-->
+        <RelativeLayout
+            android:layout_width="52dp"
+            android:layout_height="62dp">
+
+            <com.example.tiktok.ui.view.CircleImageView
+                android:id="@+id/iv_avatar"
+                android:layout_width="52dp"
+                android:layout_height="52dp"
+                app:es_shape_type="round"
+                android:scaleType="centerCrop"/>
+
+            <!--关注按钮-->
+            <ImageView
+                android:id="@+id/iv_follow"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:padding="3dp"
+                android:src="@mipmap/add_focus"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"/>
+        </RelativeLayout>
+
+        <!--是否点赞-->
+        <RelativeLayout
+            android:id="@+id/rl_like"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp">
+
+            <!--点赞按钮-->
+            <com.example.tiktok.ui.view.IconFontTextView
+                android:id="@+id/iv_like"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/icon_like_fill"
+                android:textColor="@color/white"
+                android:textSize="32sp" />
+
+        </RelativeLayout>
+
+        <!--点赞数量-->
+        <TextView
+            android:id="@+id/tv_likecount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="22.5w"
+            android:textSize="12sp"
+            android:textColor="@color/white"
+            android:layout_marginTop="2dp"/>
+
+        <!--评论按钮-->
+        <com.example.tiktok.ui.view.IconFontTextView
+            android:id="@+id/iv_comment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="32sp"
+            android:textColor="@color/white"
+            android:layout_marginTop="15dp"
+            android:text="@string/icon_comment"/>
+
+        <!--评论数-->
+        <TextView
+            android:id="@+id/tv_commentcount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="3823"
+            android:layout_marginTop="2dp"
+            android:textSize="12sp"
+            android:textColor="@color/white"/>
+
+        <!--收藏按钮-->
+        <com.example.tiktok.ui.view.IconFontTextView
+            android:id="@+id/iv_collect"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="32sp"
+            android:textColor="@color/white"
+            android:layout_marginTop="12dp"
+            android:text="@string/icon_collect"/>
+
+        <!--收藏数-->
+        <TextView
+            android:id="@+id/tv_collectcount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="3371"
+            android:textSize="12sp"
+            android:layout_marginTop="-5dp"
+            android:textColor="@color/white"/>
+
+        <!--分享按钮-->
+        <com.example.tiktok.ui.view.IconFontTextView
+            android:id="@+id/iv_share"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="32sp"
+            android:textColor="@color/white"
+            android:layout_marginTop="12dp"
+            android:text="@string/icon_share"/>
+
+        <!--分享数量-->
+        <TextView
+            android:id="@+id/tv_sharecount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="3371"
+            android:textSize="12sp"
+            android:layout_marginTop="-5dp"
+            android:textColor="@color/white"/>
+
+        <!--唱片旋转动画-->
+        <RelativeLayout
+            android:id="@+id/rl_record"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="45dp"
+            android:layout_marginBottom="15dp">
+
+            <ImageView
+                android:id="@+id/iv_record"
+                android:layout_width="58dp"
+                android:layout_height="58dp"
+                android:background="@mipmap/ic_record" />
+
+            <!--作者头像-->
+            <com.example.tiktok.ui.view.CircleImageView
+                android:id="@+id/iv_head_anim"
+                android:layout_width="34dp"
+                android:layout_height="34dp"
+                app:ease_radius="15dp"
+                app:es_shape_type="round"
+                android:layout_centerInParent="true"/>
+        </RelativeLayout>
+
+    </LinearLayout>
+
+    <!-- 底部信息区 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical"
+        android:layout_marginLeft="12dp"
+        android:layout_marginBottom="18dp"
+        android:layout_marginRight="120dp">
+
+        <!-- 用户名 -->
+        <TextView
+            android:id="@+id/tv_nickname"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=" @用户名"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:textColor="@color/white"/>
+
+        <!-- 标题/描述 -->
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="这是视频标题描述......"
+            android:textSize="14sp"
+            android:textColor="@color/white"
+            android:maxLines="2"
+            android:ellipsize="end"/>
+
+        <!-- 音乐 -->
+        <com.example.tiktok.ui.view.MarqueeTextView
+            android:layout_width="180dp"
+            android:layout_height="wrap_content"
+            android:text=" @用户名 创作的原声 - 用户名"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            android:ellipsize="marquee"
+            android:singleLine="true"
+            android:marqueeRepeatLimit="marquee_forever"
+            android:layout_marginTop="10dp"/>
+        </LinearLayout>
+
+</RelativeLayout>

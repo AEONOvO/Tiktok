@@ -1,0 +1,71 @@
+<resources>
+    <string name="app_name">tiktok</string>
+
+    <!-- ========== 用户相关 ========== -->
+    <string name="user_nickname_format">\@%s</string>
+    <string name="default_user_name">抖音用户xxx</string>
+    <string name="enter_user_home">进入用户主页</string>
+
+    <!-- ========== 评论相关 ========== -->
+    <string name="comment_count_format">%d条评论</string>
+    <string name="comment_input_hint">善语结善缘，恶言伤人心</string>
+    <string name="comment_send">发送</string>
+    <string name="comment_empty">请输入评论内容</string>
+    <string name="comment_publish_success">发布成功</string>
+    <string name="comment_publish_failed">发布失败: %s</string>
+    <string name="comment_load_failed">加载失败: %s</string>
+
+    <!-- 点赞 -->
+    <string name="icon_like_fill">&#xe60d;</string>
+    <!--评论-->
+    <string name="icon_comment">&#xe621;</string>
+    <!-- 收藏/未收藏 -->
+    <string name="icon_collect">&#xe614;</string>
+    <string name="icon_collect_fill">&#xe623;</string>
+    <!-- 分享 -->
+    <string name="icon_share">&#xe622;</string>
+    <!-- 微博 -->
+    <string name="icon_weibo">&#xe620;</string>
+    <!-- 微信 -->
+    <string name="icon_wechat">&#xe61d;</string>
+    <!-- 微信朋友圈 -->
+    <string name="icon_friends">&#xe61c;</string>
+    <!-- QQ -->
+    <string name="icon_qq">&#xe61e;</string>
+    <!-- QQ空间 -->
+    <string name="icon_qq_space">&#xe61f;</string>
+    <!-- 更多 -->
+    <string name="icon_more">&#xe61b;</string>
+    <!-- 地理位置 -->
+    <string name="icon_location_fill">&#xe624;</string>
+
+    <!-- ========== 个人主页相关 ========== -->
+    <string name="user_background_image">用户背景图片</string>
+    <string name="user_avatar">用户头像</string>
+    <string name="back_button">返回</string>
+    <string name="follow">关注</string>
+    <string name="more_options">更多选项</string>
+    <string name="tab_navigation">标签导航</string>
+    <string name="content_pages">内容页面</string>
+    <string name="dropdown_menu">下拉菜单</string>
+    <string name="dropdown_arrow">下拉箭头</string>
+    <!-- 个人信息 -->
+    <string name="douyin_id">抖音号: %s</string>
+    <string name="age">%s岁</string>
+    <string name="location">%s</string>
+    <!-- 统计信息 -->
+    <string name="likes_received">\u0020获赞</string>
+    <string name="following">\u0020关注</string>
+    <string name="followers">\u0020粉丝</string>
+    <!-- 个性签名示例 -->
+    <string name="default_signature">为实现中华民族伟大复兴的中国梦而努力奋斗\n</string>
+    <!-- 示例数据 -->
+    <string name="example_nickname">AEON</string>
+    <string name="example_douyin_id">抖音号: AEONOVO</string>
+    <string name="example_age">24岁</string>
+    <string name="example_location">重庆</string>
+    <string name="example_likes">22</string>
+    <string name="example_following">23</string>
+    <string name="example_followers">24</string>
+
+</resources>
