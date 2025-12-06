@@ -16,10 +16,12 @@ import com.example.tiktok.databinding.ItemGridvideoBinding
 import com.example.tiktok.ui.activity.VideoPlayActivity
 import com.example.tiktok.ui.adapter.GridVideoAdapter
 import com.example.tiktok.ui.viewmodel.RecommendViewModel
+import com.example.tiktok.utils.IScrollToTop
 import com.example.tiktok.utils.Resource
 import com.example.tiktok.utils.SwipeGestureHelper
 
-class RecommendFragment : BaseBindingFragment<FragmentRecommendBinding>({FragmentRecommendBinding.inflate(it)}), IScrollToTop {
+class RecommendFragment : BaseBindingFragment<FragmentRecommendBinding>({FragmentRecommendBinding.inflate(it)}),
+    IScrollToTop {
 
     private val viewModel:RecommendViewModel by viewModels()            //by viewModels()确保屏幕旋转时数据不丢失，生命周期自动管理
     //双列列表适配器

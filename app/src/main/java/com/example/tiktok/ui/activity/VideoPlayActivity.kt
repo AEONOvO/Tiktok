@@ -24,7 +24,6 @@ class VideoPlayActivity:BaseBindingActivity<ActivityVideoPlayBinding>({ActivityV
     private var videoPlayAdapter:VideoPlayAdapter?=null
     private var currentPosition:Int=0
     private val videoList = mutableListOf<VideoBean>()
-
     private var touchHelper: VideoPlayTouchHelper? = null
     private var isRefreshing = false
     private var isLoadingMore = false

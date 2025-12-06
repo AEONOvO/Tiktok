@@ -1,9 +1,10 @@
-package com.example.tiktok.base
+package com.example.tiktok.ui.adapter
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
-import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.lifecycle.Lifecycle
+import androidx.viewpager2.adapter.FragmentStateAdapter
+
 class CommPagerAdapter(
     fragmentManager: FragmentManager,
     lifecycle: Lifecycle,
@@ -13,11 +14,13 @@ class CommPagerAdapter(
     override fun getItemCount(): Int {
         return items.size
     }
+
     override fun createFragment(position: Int): Fragment {
         return items[position]
     }
+
     //获取页面标题
-    fun getPageTitle(position: Int):CharSequence?{
-        return if (position<titles.size) titles[position] else null
+    fun getPageTitle(position: Int): CharSequence? {
+        return if (position < titles.size) titles[position] else null
     }
 }

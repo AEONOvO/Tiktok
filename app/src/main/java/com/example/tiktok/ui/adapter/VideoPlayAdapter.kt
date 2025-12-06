@@ -317,14 +317,6 @@ class VideoPlayAdapter(
             }
         }
 
-
-
-
-
-
-
-
-
         //切换播放/暂停
         private fun togglePlayPause() {
             exoPlayer?.let {
@@ -458,9 +450,6 @@ class VideoPlayAdapter(
         }
 
 
-
-
-
         //更新点赞状态，并同步UI与动画
         fun updateLikeState(isLiked: Boolean) {
             currentVideo.isLiked = isLiked
@@ -487,10 +476,6 @@ class VideoPlayAdapter(
 
 
 
-
-
-
-
         //格式化数字
         private fun formatCount(count: Int): String {
             return when {
@@ -500,7 +485,6 @@ class VideoPlayAdapter(
             }
         }
     }
-
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VideoViewHolder {

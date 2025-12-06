@@ -14,7 +14,6 @@ abstract class BaseActivity: AppCompatActivity() {
         super.onCreate(savedInstanceState)
         init()
     }
-
     protected  abstract fun init()
 
     //状态栏颜色

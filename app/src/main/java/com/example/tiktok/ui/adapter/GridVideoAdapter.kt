@@ -62,7 +62,6 @@ class GridVideoAdapter(private val context: Context,
             }
         }
     }
-
     //加载视频封面（第一帧）
     private fun loadVideoCover(video: VideoBean, holder: GridVideoViewHolder){
         if (video.coverRes != 0) {

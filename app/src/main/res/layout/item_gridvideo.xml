@@ -93,9 +93,6 @@
                 tools:text="999w"
                 android:textColor="#CCCCCC"
                 android:textSize="12sp"/>
-
-
-
         </LinearLayout>
 
     </RelativeLayout>

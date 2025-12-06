@@ -5,9 +5,11 @@ import android.view.View
 import android.widget.Toast
 import com.example.tiktok.base.BaseBindingFragment
 import com.example.tiktok.databinding.FragmentSameCityBinding
+import com.example.tiktok.utils.IScrollToTop
 import com.example.tiktok.utils.SwipeGestureHelper
 
-class SameCityFragment : BaseBindingFragment<FragmentSameCityBinding>({FragmentSameCityBinding.inflate(it)}), IScrollToTop {
+class SameCityFragment : BaseBindingFragment<FragmentSameCityBinding>({FragmentSameCityBinding.inflate(it)}),
+    IScrollToTop {
 
     private var swipeGestureHelper: SwipeGestureHelper? = null
 

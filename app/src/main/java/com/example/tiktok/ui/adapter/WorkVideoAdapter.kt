@@ -12,10 +12,10 @@ import com.example.tiktok.R
 import com.example.tiktok.databinding.ItemWorkBinding
 import com.example.tiktok.data.model.VideoBean
 import com.example.tiktok.base.BaseAdapter
-import com.example.tiktok.databinding.ItemGridvideoBinding
 import com.example.tiktok.ui.adapter.WorkVideoAdapter.WorkVideoViewHolder
 import java.util.Locale
 class WorkVideoAdapter(private val context: Context,
+                       private val onItemClick: (VideoBean, Int,ItemWorkBinding) -> Unit,
                        private val onLikeClick: (VideoBean, Int) -> Unit) : BaseAdapter<WorkVideoViewHolder, VideoBean>(VideoDiff()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WorkVideoViewHolder {
@@ -32,7 +32,13 @@ class WorkVideoAdapter(private val context: Context,
             ivLikeCount.text=formatLikeCount(video.likeCount)
             // 设置共享元素的 transitionName（每个封面唯一标识）
             ViewCompat.setTransitionName(ivCover, "video_cover_$position")
-            //点击点赞区域
+
+            root.setOnClickListener {
+                val currentPosition = holder.bindingAdapterPosition
+                if (currentPosition != RecyclerView.NO_POSITION) {
+                    onItemClick(video, currentPosition,holder.binding)
+                }
+            }
             ivLike.setOnClickListener {
                 onLikeClick(video, holder.bindingAdapterPosition)
             }

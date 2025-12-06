@@ -1,4 +1,4 @@
-package com.example.tiktok.ui.fragment
+package com.example.tiktok.utils
 
 interface IScrollToTop {
     fun scrollToTop()

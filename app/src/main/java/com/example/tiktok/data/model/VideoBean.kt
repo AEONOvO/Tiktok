@@ -9,7 +9,6 @@ data class VideoBean(
     var videoRes: String = "",          //视频播放资源
     var coverRes: Int = 0,              //封面播放资源
     var content: String? = null,        // 视频描述
-
     var isLiked: Boolean = false,       // 是否点赞
     var isCollected:Boolean=false,      // 是否收藏
     var distance: Float = 0f,           // 距离

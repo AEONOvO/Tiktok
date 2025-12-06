@@ -23,11 +23,12 @@ import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
 import com.example.tiktok.R
 import com.example.tiktok.base.BaseBindingFragment
-import com.example.tiktok.base.CommPagerAdapter
+import com.example.tiktok.ui.adapter.CommPagerAdapter
 import com.example.tiktok.databinding.FragmentPersonalHomeBinding
 import com.example.tiktok.ui.fragment.MainFragment.Companion.curPage
 import com.example.tiktok.ui.view.AvatarChooseDialog
 import com.example.tiktok.ui.viewmodel.PersonalHomeViewModel
+import com.example.tiktok.utils.IScrollToTop
 import com.example.tiktok.utils.ImageUtils
 import com.example.tiktok.utils.Resource
 import com.google.android.material.tabs.TabLayout

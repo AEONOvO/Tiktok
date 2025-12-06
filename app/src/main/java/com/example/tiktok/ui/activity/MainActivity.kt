@@ -10,9 +10,7 @@ import com.example.tiktok.ui.fragment.MainFragment
 import com.example.tiktok.utils.DataCreate
 
 class MainActivity:BaseBindingActivity<ActivityMainBinding>({ActivityMainBinding.inflate(it)}) {
-
     private val mainFragment= MainFragment()
-
     private var lastTime:Long=0
     private val exitTime=2000
 

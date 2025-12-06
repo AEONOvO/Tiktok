@@ -11,19 +11,21 @@ import com.example.tiktok.base.BaseBindingFragment
 import com.example.tiktok.data.model.VideoBean
 import com.example.tiktok.databinding.FragmentWorkBinding
 import com.example.tiktok.databinding.ItemGridvideoBinding
+import com.example.tiktok.databinding.ItemWorkBinding
 import com.example.tiktok.ui.activity.VideoPlayActivity
 import com.example.tiktok.ui.adapter.WorkVideoAdapter
 import com.example.tiktok.ui.viewmodel.WorkViewModel
+import com.example.tiktok.utils.IScrollToTop
 import com.example.tiktok.utils.Resource
 import com.example.tiktok.utils.SwipeGestureHelper
-class WorkFragment: BaseBindingFragment<FragmentWorkBinding>({FragmentWorkBinding.inflate(it)}), IScrollToTop {
+class WorkFragment: BaseBindingFragment<FragmentWorkBinding>({FragmentWorkBinding.inflate(it)}),
+    IScrollToTop {
     private val viewModel: WorkViewModel by viewModels()
     //列表适配器
     private var adapter:WorkVideoAdapter? = null
     //是否正在加载
     private var isLoading=false
     //是否是首次加载
-    private var isFirstLoad = true
     //手势检测器
     private var swipeGestureHelper: SwipeGestureHelper? = null
 
@@ -31,7 +33,6 @@ class WorkFragment: BaseBindingFragment<FragmentWorkBinding>({FragmentWorkBindin
         super.onViewCreated(view, savedInstanceState)
         initRecyclerView()
         observeViewModel()
-        setupSwipeGesture()
         viewModel.loadRecommendVideos(isRefresh = true)
     }
 
@@ -43,6 +44,10 @@ class WorkFragment: BaseBindingFragment<FragmentWorkBinding>({FragmentWorkBindin
         //初始化适配器并绑定数据
         adapter= WorkVideoAdapter(
             context=requireContext(),
+            onItemClick = { video, position, itemBinding->
+                // 启动带共享元素的转场动画
+                startVideoPlayWithTransition(video, position, itemBinding)
+            },
             onLikeClick = { video, position ->
                 // 点赞
                 viewModel.toggleLike(video, position)
@@ -57,7 +62,7 @@ class WorkFragment: BaseBindingFragment<FragmentWorkBinding>({FragmentWorkBindin
     private fun startVideoPlayWithTransition(
         video: VideoBean,
         position: Int,
-        itemBinding: ItemGridvideoBinding
+        itemBinding: ItemWorkBinding
     ) {
         val videoList = viewModel.getCurrentVideoList()
 
@@ -82,22 +87,6 @@ class WorkFragment: BaseBindingFragment<FragmentWorkBinding>({FragmentWorkBindin
         )
     }
 
-    //设置滑动手势
-    private fun setupSwipeGesture() {
-        swipeGestureHelper = SwipeGestureHelper(
-            context = requireContext(),
-            onSwipeLeft = {
-                // 推荐页已是最后一页
-                Toast.makeText(context, "已经是最后一页了", Toast.LENGTH_SHORT).show()
-            },
-            onSwipeRight = {
-                // 向右滑动，切换到同城页
-                (parentFragment as? MainFragment)?.switchTab(0)
-            }
-        )
-        swipeGestureHelper?.attachToRecyclerView(binding.recyclerView)
-    }
-
     //观察视频列表
     private fun observeViewModel() {
         viewModel.videoList.observe(viewLifecycleOwner) { resource ->
@@ -107,16 +96,9 @@ class WorkFragment: BaseBindingFragment<FragmentWorkBinding>({FragmentWorkBindin
                 }
                 is Resource.Success -> {
                     // 移除了 refreshLayout.isRefreshing 的设置
-                    isLoading = false
-
                     resource.data?.let { videos ->
                         adapter?.clearList()
                         adapter?.appendList(videos)
-
-                        if (!isFirstLoad) {
-                            // Toast.makeText(context, "加载成功", Toast.LENGTH_SHORT).show()
-                        }
-                        isFirstLoad = false
                     }
                 }
                 is Resource.Error -> {

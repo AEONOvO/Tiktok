@@ -10,8 +10,6 @@ import androidx.viewbinding.ViewBinding
 abstract class BaseBindingFragment<VB : ViewBinding>(
     val block: (LayoutInflater) -> VB
 ) : Fragment() {
-
-
     //创建内部存储的 binding 实例（可空），用于在生命周期内管理 binding 的创建与销毁
     private var _binding:VB?=null
 

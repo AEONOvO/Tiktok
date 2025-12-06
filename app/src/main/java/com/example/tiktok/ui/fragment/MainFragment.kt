@@ -10,8 +10,9 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
 import androidx.viewpager2.widget.ViewPager2
 import com.example.tiktok.base.BaseBindingFragment
-import com.example.tiktok.base.CommPagerAdapter
+import com.example.tiktok.ui.adapter.CommPagerAdapter
 import com.example.tiktok.databinding.FragmentMainBinding
+import com.example.tiktok.utils.IScrollToTop
 import com.google.android.material.tabs.TabLayoutMediator
 import kotlin.collections.ArrayList
 import com.google.android.material.tabs.TabLayout
