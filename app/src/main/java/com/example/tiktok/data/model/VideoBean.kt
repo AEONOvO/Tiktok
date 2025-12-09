@@ -16,7 +16,6 @@ data class VideoBean(
     var commentCount: Int = 0,
     var collectCount: Int =0,
     var shareCount: Int = 0,
-
     var userBean: UserBean? = null
 ) : Parcelable
 

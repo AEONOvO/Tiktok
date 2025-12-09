@@ -34,7 +34,6 @@ class UserRepository(private val context: Context) {
                     fansCount = 66,
                     isFollowing = false
                 )
-
                 Result.success(userInfo)
             } catch (e: Exception) {
                 Result.failure(e)

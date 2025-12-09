@@ -49,9 +49,6 @@
                         <RelativeLayout
                             android:layout_width="match_parent"
                             android:layout_height="100dp">
-
-
-
                             <com.example.tiktok.ui.view.CircleImageView
                                 android:id="@+id/ivHead"
                                 android:layout_width="100dp"
@@ -232,10 +229,8 @@
                                         android:textColor="@color/color_tag"
                                         android:textSize="14sp"/>
                                 </LinearLayout>
-
                             </LinearLayout>
                         </LinearLayout>
-
                     </LinearLayout>
                 </RelativeLayout>
 

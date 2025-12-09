@@ -6,11 +6,9 @@ import com.example.tiktok.data.model.UserBean
 import kotlinx.coroutines.delay
 
 class CommentRepository {
-
     suspend fun getCommentList(videoId: Int): Result<List<CommentBean>> {
     return try {
         delay(500)
-
         // 使用 UserBean 构造评论数据
         val comments = listOf(
             CommentBean(
@@ -76,7 +74,6 @@ class CommentRepository {
                 isLiked = false
             )
         )
-
         Result.success(comments)
     } catch (e: Exception) {
         Result.failure(e)
@@ -87,7 +84,6 @@ class CommentRepository {
     suspend fun publishComment(videoId: Int, content: String): Result<CommentBean> {
         return try {
             delay(800)
-
             // 模拟当前用户信息
             val currentUser = UserBean(
                 userId = 9999,
@@ -95,7 +91,6 @@ class CommentRepository {
                 headId = R.mipmap.default_avatar,
                 sign = "我好看"
             )
-
             val newComment = CommentBean(
                 commentId = System.currentTimeMillis().toInt(),  // 使用时间戳作为 ID
                 videoId = videoId,
