@@ -17,10 +17,6 @@ media3Datasource = "1.8.0"
 lifecycleCommonJvm = "2.10.0"
 uiTestAndroid = "1.6.6"
 media3Exoplayer = "1.8.0"
-legacySupportV4 = "1.0.0"
-lifecycleLivedataKtx = "2.10.0"
-lifecycleViewmodelKtx = "2.10.0"
-fragmentKtx = "1.8.9"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -46,11 +42,7 @@ androidx-viewpager2 = { group = "androidx.viewpager2", name = "viewpager2", vers
 androidx-media3-datasource = { group = "androidx.media3", name = "media3-datasource", version.ref = "media3Datasource" }
 androidx-lifecycle-common-jvm = { group = "androidx.lifecycle", name = "lifecycle-common-jvm", version.ref = "lifecycleCommonJvm" }
 androidx-ui-test-android = { group = "androidx.compose.ui", name = "ui-test-android", version.ref = "uiTestAndroid" }
-androidx-media3-exoplayer = { group = "androidx.media3", name = "media3-exoplayer", version.ref = "media3Exoplayer" }
-androidx-legacy-support-v4 = { group = "androidx.legacy", name = "legacy-support-v4", version.ref = "legacySupportV4" }
-androidx-lifecycle-livedata-ktx = { group = "androidx.lifecycle", name = "lifecycle-livedata-ktx", version.ref = "lifecycleLivedataKtx" }
-androidx-lifecycle-viewmodel-ktx = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "lifecycleViewmodelKtx" }
-androidx-fragment-ktx = { group = "androidx.fragment", name = "fragment-ktx", version.ref = "fragmentKtx" }  # Glide注解处理器
+androidx-media3-exoplayer = { group = "androidx.media3", name = "media3-exoplayer", version.ref = "media3Exoplayer" }  # Glide注解处理器
 
 
 [plugins]

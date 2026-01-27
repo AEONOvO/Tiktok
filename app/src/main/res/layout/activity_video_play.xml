@@ -6,33 +6,147 @@
     android:layout_height="match_parent"
     android:background="@android:color/black">
 
-    <!-- 下拉刷新提示 -->
-    <TextView
-        android:id="@+id/tv_refresh_hint"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="下拉刷新"
-        android:textColor="@android:color/white"
-        android:textSize="14sp"
-        android:padding="16dp"
-        android:alpha="0"
+    <!-- 顶部导航栏 -->
+    <RelativeLayout
+        android:id="@+id/top_bar"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:background="@drawable/top_bar_gradient"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:elevation="8dp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent">
 
-    <!-- ViewPager2 用于滑动切换视频 -->
+        <!-- 返回按钮 -->
+        <ImageView
+            android:id="@+id/iv_back"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_centerVertical="true"
+            android:src="@mipmap/iv_back"
+            android:padding="6dp"
+            android:contentDescription="@string/back"
+            android:background="?attr/selectableItemBackgroundBorderless"/>
+
+        <!-- Tab 容器 -->
+        <LinearLayout
+            android:id="@+id/tab_container"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <!-- Tab 文字容器 -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:gravity="center">
+
+                <!-- 同城 Tab -->
+                <TextView
+                    android:id="@+id/tv_tab_same_city"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/same_city"
+                    android:textSize="18sp"
+                    android:textColor="@color/white"
+                    android:alpha="0.6"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"
+                    android:paddingTop="4dp"
+                    android:paddingBottom="4dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"/>
+
+                <!-- 推荐 Tab -->
+                <TextView
+                    android:id="@+id/tv_tab_recommend"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/recommend"
+                    android:textSize="18sp"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    android:alpha="1.0"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"
+                    android:paddingTop="4dp"
+                    android:paddingBottom="4dp"
+                    android:layout_marginStart="8dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"/>
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- 搜索按钮 -->
+        <ImageView
+            android:id="@+id/iv_search"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:src="@mipmap/iv_search"
+            android:padding="6dp"
+            android:contentDescription="@string/search"
+            android:background="?attr/selectableItemBackgroundBorderless"/>
+
+    </RelativeLayout>
+
+    <!-- ViewPager2 区域 -->
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/view_pager"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"/>
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintTop_toBottomOf="@id/top_bar"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <!-- 下拉刷新容器 -->
+    <LinearLayout
+        android:id="@+id/refresh_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:padding="12dp"
+        android:alpha="0"
+        android:elevation="4dp"
+        app:layout_constraintTop_toBottomOf="@id/top_bar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <!-- 刷新图标 -->
+        <ImageView
+            android:id="@+id/iv_refresh_icon"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/ic_refresh"
+            android:contentDescription="@string/refresh_icon"/>
+
+        <!-- 刷新文字 -->
+        <TextView
+            android:id="@+id/tv_refresh_hint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/pull_to_refresh"
+            android:textColor="@android:color/white"
+            android:textSize="14sp"
+            android:layout_marginStart="8dp"/>
+
+    </LinearLayout>
 
     <!-- 上拉加载提示 -->
     <TextView
         android:id="@+id/tv_load_more_hint"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="上拉加载更多"
+        android:text="@string/pull_to_load_more"
         android:textColor="@android:color/white"
         android:textSize="14sp"
         android:padding="16dp"
@@ -41,16 +155,4 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <!-- 返回 -->
-    <ImageView
-        android:id="@+id/iv_back"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:src="@mipmap/iv_back"
-        android:padding="12dp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_margin="16dp" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>
-

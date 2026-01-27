@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+
+    <!-- 从半透明黑色到完全透明的渐变 -->
+    <gradient
+        android:angle="270"
+        android:startColor="#80000000"
+        android:endColor="#00000000"
+        android:type="linear"/>
+
+</shape>

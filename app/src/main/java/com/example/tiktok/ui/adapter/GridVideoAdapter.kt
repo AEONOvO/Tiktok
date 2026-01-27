@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.tiktok.R
-import com.example.tiktok.databinding.ItemGridvideoBinding
+import com.example.tiktok.databinding.ItemGridVideoBinding
 import com.example.tiktok.data.model.VideoBean
 import com.example.tiktok.base.BaseAdapter
 import com.example.tiktok.ui.adapter.GridVideoAdapter.GridVideoViewHolder
@@ -16,87 +16,69 @@ import java.util.Locale
 
 
 class GridVideoAdapter(private val context: Context,
-                       private val onItemClick: (VideoBean, Int,ItemGridvideoBinding) -> Unit,
-                       private val onAvatarClick: (VideoBean, Int) -> Unit,
-                       private val onLikeClick: (VideoBean, Int) -> Unit) : BaseAdapter<GridVideoViewHolder, VideoBean>(VideoDiff()) {
+                       private val onItemClick: (VideoBean, Int,ItemGridVideoBinding) -> Unit) : BaseAdapter<GridVideoViewHolder, VideoBean>(VideoDiff()) {
 
+    inner class GridVideoViewHolder(val binding: ItemGridVideoBinding) : RecyclerView.ViewHolder(binding.root)
+
+    //创建新的 ViewHolder 实例
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GridVideoViewHolder {
-        return GridVideoViewHolder(ItemGridvideoBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+        return GridVideoViewHolder(
+            ItemGridVideoBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        )
     }
 
     //绑定数据到ViewHolder
     override fun onBindViewHolder(holder: GridVideoViewHolder, position: Int) {
-        val video=mList.getOrNull(holder.bindingAdapterPosition)?:return
+        val video = mList.getOrNull(holder.bindingAdapterPosition) ?: return
 
         with(holder.binding){
             //加载视频封面
-            loadVideoCover(video,holder)
-
+            loadVideoCover(video, holder)
             //加载作者头像
-            loadAuthorAvatar(video,holder)
+            loadAuthorAvatar(video, holder)
 
             //设置文字信息
-            tvContent.text=video.content
-            ivAuthorName.text=video.userBean?.nickName?:"抖音用户xxx"
-            ivLikeCount.text=formatLikeCount(video.likeCount)
+            tvContent.text = video.content
+            ivAuthorName.text = video.userBean?.nickName ?: "抖音用户xxx"
+            ivLikeCount.text = formatLikeCount(video.likeCount)
 
             // 设置共享元素的 transitionName（每个封面唯一标识）
             ViewCompat.setTransitionName(ivCover, "video_cover_$position")
 
-            //点击整个卡片跳转
+            //设置点击卡片事件监听
             root.setOnClickListener {
                 val currentPosition = holder.bindingAdapterPosition
                 if (currentPosition != RecyclerView.NO_POSITION) {
                     onItemClick(video, currentPosition,holder.binding)
                 }
             }
-
-            //点击头像跳转
-            ivAvatar.setOnClickListener {
-                onAvatarClick(video, holder.bindingAdapterPosition)
-            }
-
-            //点击点赞区域
-            ivLike.setOnClickListener {
-                onLikeClick(video, holder.bindingAdapterPosition)
-            }
         }
     }
+
     //加载视频封面（第一帧）
     private fun loadVideoCover(video: VideoBean, holder: GridVideoViewHolder){
-        if (video.coverRes != 0) {
-
-            Glide.with(context)
-                .load(video.coverRes)
-                .placeholder(R.drawable.loading)
-                .error(R.drawable.default_error)
-                .into(holder.binding.ivCover)
-        } else {
-
-            Glide.with(context)
-                .asBitmap()
-                .load(video.videoRes)
-                .apply(
-                    RequestOptions()
-                        .frame(0)
-                        .placeholder(R.drawable.loading)
-                        .error(R.drawable.default_error)
-                )
-                .into(holder.binding.ivCover)
-        }
+        Glide.with(context)
+            .asBitmap()                                 // 指定加载 Bitmap 以获取视频的帧图
+            .load(video.videoRes)                       // 加载视频资源
+            .apply(
+                RequestOptions()
+                    .frame(0)            // 获取视频的第一帧
+                    .placeholder(R.drawable.loading)    // 加载时占位图
+                    .error(R.drawable.default_error)    // 加载失败时的替代图
+            )
+            .into(holder.binding.ivCover) // 加载到指定的 ImageView
     }
 
     //加载作者头像
     private fun loadAuthorAvatar(video: VideoBean, holder: GridVideoViewHolder){
-        val headId = video.userBean?.headId ?: 0
+        val headId = video.userBean?.headId ?: R.mipmap.default_avatar
 
         Glide.with(context)
-            //优先显示视频所属用户的自定义头像，若用户信息不存在、头像为空或无效，则显示默认头像
-            .load(if (headId != 0) headId else R.mipmap.default_avatar)
-            .placeholder(R.mipmap.default_avatar)
-            .error(R.mipmap.default_avatar)
-            .circleCrop()                   //将加载的头像裁剪为圆形
-            .into(holder.binding.ivAvatar)  //将加载的头像显示到ImageView中
+            .load(headId)
+            .placeholder(R.mipmap.default_avatar)   // 加载中的占位图
+            .error(R.mipmap.default_avatar)         // 加载错误时默认图
+            .circleCrop()                           // 将加载的头像裁剪为圆形
+            .into(holder.binding.ivAvatar)          // 显示到指定 ImageView 中
     }
 
     //格式化点赞数量
@@ -107,15 +89,4 @@ class GridVideoAdapter(private val context: Context,
             else -> String.format(Locale.US, "%.1fw", count / 10000.0)
         }
     }
-
-    //更新指定位置的点赞状态
-    fun updateLikeStatus(position: Int, isLiked: Boolean) {
-        mList.getOrNull(position)?.let { video ->
-            video.isLiked = isLiked
-            notifyItemChanged(position)
-        }
-    }
-
-
-    inner class GridVideoViewHolder(val binding: ItemGridvideoBinding) : RecyclerView.ViewHolder(binding.root)
 }

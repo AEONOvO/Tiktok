@@ -5,7 +5,7 @@ import com.example.tiktok.data.model.UserBean
 import com.example.tiktok.data.model.VideoBean
 import java.util.ArrayList
 
-
+// 本地数据
 class DataCreate {
     init {
         val videoBean1= VideoBean()
@@ -175,6 +175,9 @@ class DataCreate {
         datas.add(videoBean3)
         datas.add(videoBean4)
         datas.add(videoBean5)
+        datas.add(videoBean6)
+        datas.add(videoBean2)
+        datas.add(videoBean4)
         datas.add(videoBean6)
 
     }

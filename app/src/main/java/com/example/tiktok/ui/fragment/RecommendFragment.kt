@@ -10,46 +10,34 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.tiktok.R
 import com.example.tiktok.base.BaseBindingFragment
-import com.example.tiktok.data.model.VideoBean
 import com.example.tiktok.databinding.FragmentRecommendBinding
-import com.example.tiktok.databinding.ItemGridvideoBinding
+import com.example.tiktok.databinding.ItemGridVideoBinding
 import com.example.tiktok.ui.activity.VideoPlayActivity
 import com.example.tiktok.ui.adapter.GridVideoAdapter
-import com.example.tiktok.ui.viewmodel.RecommendViewModel
-import com.example.tiktok.utils.IScrollToTop
+import com.example.tiktok.viewmodel.RecommendViewModel
 import com.example.tiktok.utils.Resource
-import com.example.tiktok.utils.SwipeGestureHelper
 
-class RecommendFragment : BaseBindingFragment<FragmentRecommendBinding>({FragmentRecommendBinding.inflate(it)}),
-    IScrollToTop {
+class RecommendFragment : BaseBindingFragment<FragmentRecommendBinding>({FragmentRecommendBinding.inflate(it)}), IScrollToTop {
 
-    private val viewModel:RecommendViewModel by viewModels()            //by viewModels()确保屏幕旋转时数据不丢失，生命周期自动管理
+    //懒加载创建和获取 ViewModel 实例
+    private val viewModel: RecommendViewModel by viewModels()
     //双列列表适配器
     private var adapter:GridVideoAdapter? = null
     //是否正在加载
     private var isLoading=false
     //是否是首次加载
     private var isFirstLoad = true
-    //手势检测器
-    private var swipeGestureHelper: SwipeGestureHelper? = null
-
     // 标记是否还有更多数据
     private var hasMoreData = true
-    // 上次触发加载的时间戳（防抖）
-    private var lastLoadTime = 0L
-    // 加载间隔（毫秒）
-    private val LOAD_INTERVAL = 1000L
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        
-        initRecyclerView()
-        setRefreshEvent()
-        setupLoadMore()
-        observeViewModel()
-        setupSwipeGesture()
 
-        viewModel.loadRecommendVideos(isRefresh = true)
+        viewModel.loadRecommendVideos(isRefresh = true) //首次加载视频
+        initRecyclerView()      //设置 RecyclerView（双列瀑布流）
+        setRefreshEvent()       //设置下拉刷新
+        setupLoadMore()         //设置上拉加载更多
+        observeViewModel()      //观察 ViewModel 数据变化
 
     }
 
@@ -61,39 +49,24 @@ class RecommendFragment : BaseBindingFragment<FragmentRecommendBinding>({Fragmen
         //初始化适配器并绑定数据
         adapter= GridVideoAdapter(
             context=requireContext(),
-            onItemClick = { video, position, itemBinding->
+            onItemClick = { _, position, itemBinding->
                 // 启动带共享元素的转场动画
-                startVideoPlayWithTransition(video, position, itemBinding)
+                startVideoPlayWithTransition(position, itemBinding)
             },
-            onAvatarClick = { video, _ ->
-                // 点击头像跳转到作者页面
-                Toast.makeText(context, "进入 ${video.userBean?.nickName} 的主页", Toast.LENGTH_SHORT).show()
 
-            },
-            onLikeClick = { video, position ->
-                // 点赞
-                viewModel.toggleLike(video, position)
-            }
         )
 
-        //性能优化
         binding.recyclerView.adapter=adapter
-        binding.recyclerView.setHasFixedSize(true)
+        binding.recyclerView.setHasFixedSize(true)      //RecyclerView宽高固定
     }
 
     // 启动带共享元素转场的视频播放页面
-    private fun startVideoPlayWithTransition(
-        video: VideoBean,
-        position: Int,
-        itemBinding: ItemGridvideoBinding
-    ) {
+    private fun startVideoPlayWithTransition(position: Int, itemBinding: ItemGridVideoBinding) {
+        // 获取完整视频列表
         val videoList = viewModel.getCurrentVideoList()
 
         // 创建共享元素配对
-        val coverPair = Pair.create(
-            itemBinding.ivCover as View,
-            "video_cover_$position"
-        )
+        val coverPair = Pair.create(itemBinding.ivCover as View, "video_cover_$position")
 
         // 创建转场动画选项
         val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
@@ -104,33 +77,17 @@ class RecommendFragment : BaseBindingFragment<FragmentRecommendBinding>({Fragmen
         // 启动 Activity
         VideoPlayActivity.startWithTransition(
             requireContext(),
-            videoList,
-            position,
-            options.toBundle()
+            videoList,           // 完整视频列表
+            position,            // 当前点击的视频位置
+            options.toBundle()   // 将动画配置传递给目标 Activity
         )
     }
-
-
-    //设置滑动手势
-    private fun setupSwipeGesture() {
-        swipeGestureHelper = SwipeGestureHelper(
-            context = requireContext(),
-            onSwipeLeft = {
-                // 推荐页已是最后一页
-                Toast.makeText(context, "已经是最后一页了", Toast.LENGTH_SHORT).show()
-            },
-            onSwipeRight = {
-                // 向右滑动，切换到同城页
-                (parentFragment as? MainFragment)?.switchTab(0)
-            }
-        )
-        swipeGestureHelper?.attachToRecyclerView(binding.recyclerView)
-    }
-
 
     //下拉刷新
     private fun setRefreshEvent(){
+        // 设置进度条颜色
         binding.refreshLayout.setColorSchemeResources(R.color.color_link)
+        // 设置下拉刷新监听器
         binding.refreshLayout.setOnRefreshListener {
             isFirstLoad = false
             hasMoreData = true
@@ -144,33 +101,24 @@ class RecommendFragment : BaseBindingFragment<FragmentRecommendBinding>({Fragmen
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
 
-                // 只处理向上滚动
-                if (dy <= 0) return
-
-                // 防止重复触发
-                if (isLoading || !hasMoreData) {
+                if (dy <= 0 || isLoading || !hasMoreData) {
                     return
                 }
 
-                // 距离上次加载不足 1 秒则不触发
-                val currentTime = System.currentTimeMillis()
-                if (currentTime - lastLoadTime < LOAD_INTERVAL) {
-                    return
-                }
-
+                // 获取布局管理器，获取位置信息
                 val layoutManager=recyclerView.layoutManager as StaggeredGridLayoutManager
 
-                //最后一个可见项的位置
-                val lastVisibleItems=IntArray(2)
+                // 获取每一列最后可见的 item 位置
+                val lastVisibleItems = IntArray(layoutManager.spanCount)
                 layoutManager.findLastVisibleItemPositions(lastVisibleItems)
-                val lastVisibleItem=lastVisibleItems.maxOrNull()?:0
-                val totalItemCount=layoutManager.itemCount
 
-                //滚动到倒数第三行加载更多
-                if(lastVisibleItem>=totalItemCount-4&&totalItemCount>0){
-                    android.util.Log.d("RecommendFragment", "触发加载更多: lastVisibleItem=$lastVisibleItem, total=$totalItemCount")
-                    isLoading = true
-                    lastLoadTime = currentTime
+                // 取最大值，代表整个列表视觉上的最底部位置
+                val lastVisibleItemPosition = lastVisibleItems.maxOrNull() ?: 0
+                val totalItemCount = layoutManager.itemCount
+
+                // 触发加载：倒数第 4 个时触发
+                if (lastVisibleItemPosition >= totalItemCount - 4 && totalItemCount > 0) {
+                    isLoading = true        // 立即上锁
                     viewModel.loadMore()
                 }
             }
@@ -180,6 +128,7 @@ class RecommendFragment : BaseBindingFragment<FragmentRecommendBinding>({Fragmen
     //观察视频列表
     private fun observeViewModel() {
 
+        //下拉刷新
         viewModel.videoList.observe(viewLifecycleOwner) { resource ->
             when (resource) {
                 is Resource.Loading -> {
@@ -207,72 +156,30 @@ class RecommendFragment : BaseBindingFragment<FragmentRecommendBinding>({Fragmen
             }
         }
 
-
         // 加载更多结果
         viewModel.loadMoreResult.observe(viewLifecycleOwner) { resource ->
             when (resource) {
                 is Resource.Loading -> {
-                    android.util.Log.d("RecommendFragment", "正在加载更多...")
+
                 }
                 is Resource.Success -> {
-                    resource.data?.let { newVideos ->
-                        if (newVideos.isEmpty()) {
-                            // 没有更多数据了
-                            hasMoreData = false
-                            Toast.makeText(context, "没有更多数据了", Toast.LENGTH_SHORT).show()
-                        } else {
-                            // 记录当前滚动位置
-                            val layoutManager = binding.recyclerView.layoutManager as StaggeredGridLayoutManager
+                    val newVideos = resource.data ?: emptyList()
 
-                            val firstVisibleItems = IntArray(2)
-                            layoutManager.findFirstVisibleItemPositions(firstVisibleItems)
-                            val firstVisiblePosition = firstVisibleItems.minOrNull() ?: 0
-
-                            val firstView = layoutManager.findViewByPosition(firstVisiblePosition)
-                            val topOffset = firstView?.top ?: 0
-
-                            android.util.Log.d("RecommendFragment", "添加数据前: position=$firstVisiblePosition, offset=$topOffset")
-
-                            // 添加新数据
-                            adapter?.appendList(newVideos)
-
-                            // 恢复滚动位置
-                            binding.recyclerView.post {
-                                layoutManager.scrollToPositionWithOffset(firstVisiblePosition, topOffset)
-                                android.util.Log.d("RecommendFragment", "恢复滚动位置完成")
-                            }
-                            Toast.makeText(context, "加载了 ${newVideos.size} 条数据", Toast.LENGTH_SHORT).show()
-                        }
+                    if (newVideos.isEmpty()) {
+                        // 数据耗尽
+                        hasMoreData = false
+                        Toast.makeText(context, "没有更多数据了", Toast.LENGTH_SHORT).show()
+                    } else {
+                        // 直接追加数据
+                        adapter?.appendList(newVideos)
                     }
-
-                    // 延迟重置 isLoading，确保数据渲染完成
-                    binding.recyclerView.postDelayed({
-                        isLoading = false
-                        android.util.Log.d("RecommendFragment", "加载更多完成，重置 isLoading")
-                    }, 300)
+                    // 立即解锁
+                    isLoading = false
                 }
-
                 is Resource.Error -> {
                     isLoading = false  //  加载失败，恢复状态
                     Toast.makeText(context, resource.message ?: "加载失败", Toast.LENGTH_SHORT).show()
                 }
-            }
-        }
-
-        // 观察点赞结果
-        viewModel.likeResult.observe(viewLifecycleOwner) { (position, isLiked) ->
-            adapter?.updateLikeStatus(position, isLiked)
-            Toast.makeText(
-                context,
-                if (isLiked) "已点赞" else "取消点赞",
-                Toast.LENGTH_SHORT
-            ).show()
-        }
-
-        // 观察关注结果
-        viewModel.followResult.observe(viewLifecycleOwner) { (_, isFollowed) ->
-            if (isFollowed) {
-                Toast.makeText(context, "已关注", Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -282,26 +189,18 @@ class RecommendFragment : BaseBindingFragment<FragmentRecommendBinding>({Fragmen
         }
     }
 
+    //滚动到顶部
     override fun scrollToTop() {
         // 添加生命周期检查
         if (!isAdded || isDetached) {
             return
         }
 
-        // 使用 try-catch 防止崩溃
-        try {
-            binding.recyclerView.smoothScrollToPosition(0)
-        } catch (e: IllegalArgumentException) {
-            // binding 已被销毁，忽略
-            e.printStackTrace()
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
+        binding.recyclerView.smoothScrollToPosition(0)
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        swipeGestureHelper = null
         adapter = null
     }
 }

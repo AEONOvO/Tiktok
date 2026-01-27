@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="1dp"
+    android:background="#1A1A1A">
+
+    <!-- 视频封面区域 -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="300dp">
+
+        <!-- 封面图片 -->
+        <ImageView
+            android:id="@+id/iv_cover"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:contentDescription="@string/video_cover"/>
+
+        <!-- 距离标签 -->
+        <LinearLayout
+            android:id="@+id/ll_distance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_margin="8dp"
+            android:background="@drawable/bg_distance_label"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingStart="6dp"
+            android:paddingTop="4dp"
+            android:paddingEnd="6dp"
+            android:paddingBottom="4dp">
+
+            <!-- 定位图标 -->
+            <ImageView
+                android:layout_width="12dp"
+                android:layout_height="12dp"
+                android:src="@drawable/ic_location"
+                android:contentDescription="@string/location_icon"/>
+
+            <!-- 距离文字 -->
+            <TextView
+                android:id="@+id/tv_distance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:textColor="@android:color/white"
+                android:textSize="11sp"
+                android:textStyle="bold"
+                tools:text="1.2km"/>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <!-- 视频内容 -->
+    <TextView
+        android:id="@+id/tv_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:maxLines="2"
+        android:paddingStart="8dp"
+        android:paddingTop="8dp"
+        android:paddingEnd="8dp"
+        android:paddingBottom="8dp"
+        android:textColor="@color/white"
+        android:textSize="14sp"
+        tools:text="视频内容视频内容视频内容视频内容视频内容视频内容视频内容视频内容"/>
+
+    <!-- 底部信息栏 -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp">
+
+        <!-- 作者信息 -->
+        <LinearLayout
+            android:id="@+id/ll_author"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <!-- 头像 -->
+            <ImageView
+                android:id="@+id/iv_avatar"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/cover1"
+                android:contentDescription="@string/avatar"/>
+
+            <!-- 用户名 -->
+            <TextView
+                android:id="@+id/tv_author_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:ellipsize="end"
+                android:maxWidth="100dp"
+                android:singleLine="true"
+                android:textColor="#CCCCCC"
+                android:textSize="12sp"
+                tools:text="抖音用户"/>
+
+        </LinearLayout>
+
+        <!-- 点赞信息 -->
+        <LinearLayout
+            android:id="@+id/ll_like"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <!-- 点赞图标 -->
+            <ImageView
+                android:id="@+id/iv_like"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:src="@mipmap/ic_like"
+                android:contentDescription="@string/like_icon"/>
+
+            <!-- 点赞数 -->
+            <TextView
+                android:id="@+id/tv_like_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:textColor="#CCCCCC"
+                android:textSize="12sp"
+                tools:text="999w"/>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</LinearLayout>

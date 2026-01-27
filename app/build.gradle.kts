@@ -13,7 +13,7 @@ android {
     defaultConfig {
         applicationId = "com.example.tiktok"
         minSdk = 24
-        targetSdk = 35
+        targetSdk = 33
         versionCode = 1
         versionName = "1.0"
 
@@ -75,8 +75,7 @@ dependencies {
     implementation(libs.androidx.media3.datasource)
     implementation(libs.androidx.lifecycle.common.jvm)
     implementation(libs.androidx.ui.test.android)
-    implementation(libs.androidx.media3.exoplayer)
-    implementation(libs.androidx.legacy.support.v4)  // Glide核心库
+    implementation(libs.androidx.media3.exoplayer)  // Glide核心库
     ksp("androidx.room:room-compiler:2.6.0")
     ksp("com.github.bumptech.glide:compiler:4.16.0")
     implementation("com.google.android.material:material:1.11.0")
@@ -90,11 +89,13 @@ dependencies {
     implementation("com.github.yalantis:ucrop:2.2.8")
     implementation("androidx.media3:media3-exoplayer:1.2.1")
     implementation("androidx.media3:media3-ui:1.2.1")
-    implementation("androidx.lifecycle:lifecycle-common:2.6.2")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
 
-
+    val room_version = "2.6.1"
+    implementation("androidx.room:room-runtime:$room_version")
+    implementation("androidx.room:room-ktx:$room_version")
+    ksp("androidx.room:room-compiler:$room_version")
+    implementation("com.google.code.gson:gson:2.10.1")
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

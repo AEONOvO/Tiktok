@@ -1,25 +1,19 @@
 package com.example.tiktok.ui.fragment
 
 import android.os.Bundle
-import android.view.Gravity
 import android.view.View
-import android.view.ViewGroup
-import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.MutableLiveData
-import androidx.viewpager2.widget.ViewPager2
+import androidx.fragment.app.FragmentManager
+import com.example.tiktok.R
 import com.example.tiktok.base.BaseBindingFragment
-import com.example.tiktok.ui.adapter.CommPagerAdapter
+import com.example.tiktok.base.CommPagerAdapter
 import com.example.tiktok.databinding.FragmentMainBinding
-import com.example.tiktok.utils.IScrollToTop
 import com.google.android.material.tabs.TabLayoutMediator
 import kotlin.collections.ArrayList
 import com.google.android.material.tabs.TabLayout
 
 class MainFragment: BaseBindingFragment<FragmentMainBinding>({FragmentMainBinding.inflate(it)}) {
-    val videoPlayStateLiveData = MutableLiveData<Boolean>()
-
     private var sameCityFragment:SameCityFragment? = null
     private var recommendFragment:RecommendFragment? = null
 
@@ -27,15 +21,15 @@ class MainFragment: BaseBindingFragment<FragmentMainBinding>({FragmentMainBindin
     private var pagerAdapter:CommPagerAdapter? = null
     private var tabLayoutMediator:TabLayoutMediator? = null
 
+    //设置监听器、初始化 UI
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         setFragment()
         setMainMenu()
-        setupSearchClick()
     }
 
-    //设置顶部Tab和ViewPager2
+    //设置顶部Tab和ViewPager2实现左右滑动
     private fun setFragment(){
 
         sameCityFragment=SameCityFragment()
@@ -54,13 +48,6 @@ class MainFragment: BaseBindingFragment<FragmentMainBinding>({FragmentMainBindin
         )
         binding.viewPager.adapter=pagerAdapter
 
-        //预加载所有页面
-        binding.viewPager.offscreenPageLimit=1
-
-        // 启用 ViewPager2 的滑动
-        binding.viewPager.isUserInputEnabled = true
-
-
         //关联TabLayout与ViewPager2
         tabLayoutMediator= TabLayoutMediator(
             binding.tabTitle,
@@ -68,41 +55,14 @@ class MainFragment: BaseBindingFragment<FragmentMainBinding>({FragmentMainBindin
         ){tab,position->
             tab.text=pagerAdapter?.getPageTitle(position)
         }
+
+        //显示 Tab 标题
         tabLayoutMediator?.attach()
 
-        //动态设置文字居中
+        // 设置默认选中推荐页
         binding.viewPager.post {
-            for (i in 0 until binding.tabTitle.tabCount) {
-                val tab = binding.tabTitle.getTabAt(i)
-                val tabView = (tab?.view as? ViewGroup)?.getChildAt(1) as? TextView
-                tabView?.gravity = Gravity.CENTER
-            }
             binding.viewPager.setCurrentItem(1, false)
-
-            //默认选中推荐页
-            videoPlayStateLiveData.value = true
         }
-
-
-        //监听页面切换
-        binding.viewPager.registerOnPageChangeCallback(object :ViewPager2.OnPageChangeCallback(){
-            override fun onPageSelected(position: Int) {
-                super.onPageSelected(position)
-
-                curPage=position
-
-                when (position) {
-                    0 -> {
-                        // 同城页：暂停视频
-                        videoPlayStateLiveData.value = false
-                    }
-                    1 -> {
-                        // 推荐页：播放视频
-                        videoPlayStateLiveData.value = true
-                    }
-                }
-            }
-        })
 
         //监听Tab重复点击
         binding.tabTitle.addOnTabSelectedListener(object :TabLayout.OnTabSelectedListener{
@@ -110,17 +70,11 @@ class MainFragment: BaseBindingFragment<FragmentMainBinding>({FragmentMainBindin
 
             override fun onTabUnselected(tab: TabLayout.Tab?) {}
 
+            // 已选中的 Tab 再次点击
             override fun onTabReselected(tab: TabLayout.Tab?) {
                 scrollToTop(tab?.position?:0)
             }
         })
-    }
-
-    //切换到指定 Tab
-    fun switchTab(position: Int) {
-        if (position in 0 until fragments.size) {
-            binding.viewPager.setCurrentItem(position, true)  // true = 平滑滚动
-        }
     }
 
     //滚动到顶部
@@ -128,9 +82,9 @@ class MainFragment: BaseBindingFragment<FragmentMainBinding>({FragmentMainBindin
         val tag = "f$position"
         val fragment = childFragmentManager.findFragmentByTag(tag)
 
-        // 检查 Fragment 是否存在且已添加
-        if (fragment is IScrollToTop && fragment.isAdded && !fragment.isDetached) {
-            fragment.scrollToTop()
+        when (position) {
+            0 -> (fragment as? SameCityFragment)?.scrollToTop()
+            1 -> (fragment as? RecommendFragment)?.scrollToTop()
         }
     }
 
@@ -143,6 +97,7 @@ class MainFragment: BaseBindingFragment<FragmentMainBinding>({FragmentMainBindin
             addTab(newTab().setText("消息"))
             addTab(newTab().setText("我"))
 
+            //默认选中第 1 个按钮
             getTabAt(0)?.select()
 
             //监听底部Tab切换
@@ -189,20 +144,28 @@ class MainFragment: BaseBindingFragment<FragmentMainBinding>({FragmentMainBindin
 
         parentFragmentManager.beginTransaction()
             .setCustomAnimations(
-                android.R.anim.slide_in_left,
-                android.R.anim.slide_out_right,
-                android.R.anim.slide_in_left,
-                android.R.anim.slide_out_right
+                R.anim.slide_in_right,    // 新页面从右侧到左侧滑入
+                R.anim.slide_out_left,    // 旧页面向左侧到右侧滑出
+                R.anim.slide_in_left,     // 返回时，旧页面从左边滑回来
+                R.anim.slide_out_right    // 返回时，新页面向右边滑出去
             )
             .replace(android.R.id.content, personalHomeFragment)
-            .addToBackStack(null)
+            .addToBackStack(null)           // 加入回退栈
             .commit()
-    }
 
-    private fun setupSearchClick(){
-        binding.ivSearch.setOnClickListener{
-            Toast.makeText(context, "搜索功能待实现", Toast.LENGTH_SHORT).show()
+        val listener = object : FragmentManager.OnBackStackChangedListener {
+            override fun onBackStackChanged() {
+                // 当返回栈为空时
+                if (parentFragmentManager.backStackEntryCount == 0) {
+                    // 恢复底部导航栏到"首页"
+                    binding.tabMainMenu.getTabAt(0)?.select()
+                    // 移除监听器（避免重复触发）
+                    parentFragmentManager.removeOnBackStackChangedListener(this)
+                }
+            }
         }
+
+        parentFragmentManager.addOnBackStackChangedListener(listener)
     }
 
     override fun onDestroyView() {
@@ -212,10 +175,5 @@ class MainFragment: BaseBindingFragment<FragmentMainBinding>({FragmentMainBindin
         pagerAdapter=null
         sameCityFragment=null
         recommendFragment=null
-    }
-
-    companion object {
-        // 当前页码（默认推荐页，索引为1）
-        var curPage = 1
     }
 }

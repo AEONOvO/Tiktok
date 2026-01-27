@@ -39,6 +39,7 @@
     <!-- 地理位置 -->
     <string name="icon_location_fill">&#xe624;</string>
 
+
     <!-- ========== 个人主页相关 ========== -->
     <string name="user_background_image">用户背景图片</string>
     <string name="user_avatar">用户头像</string>
@@ -49,6 +50,9 @@
     <string name="content_pages">内容页面</string>
     <string name="dropdown_menu">下拉菜单</string>
     <string name="dropdown_arrow">下拉箭头</string>
+    <string name="icon_play">&#xe616;</string>
+    <string name="locked">已锁定</string>
+    <string name="video_cover">视频封面</string>
     <!-- 个人信息 -->
     <string name="douyin_id">抖音号: %s</string>
     <string name="age">%s岁</string>
@@ -60,12 +64,24 @@
     <!-- 个性签名示例 -->
     <string name="default_signature">为实现中华民族伟大复兴的中国梦而努力奋斗\n</string>
     <!-- 示例数据 -->
-    <string name="example_nickname">AEON</string>
-    <string name="example_douyin_id">抖音号: AEONOVO</string>
+    <string name="example_nickname">Aeon</string>
+    <string name="example_douyin_id">抖音号: 1934335658</string>
     <string name="example_age">24岁</string>
     <string name="example_location">重庆</string>
-    <string name="example_likes">22</string>
-    <string name="example_following">23</string>
-    <string name="example_followers">24</string>
+    <string name="example_likes">520</string>
+    <string name="example_following">13</string>
+    <string name="example_followers">14</string>
+    <!-- 导航相关 -->
+    <string name="back">返回</string>
+    <string name="search">搜索</string>
+    <string name="same_city">同城</string>
+    <string name="recommend">推荐</string>
+    <!-- 刷新提示 -->
+    <string name="pull_to_refresh">下拉刷新</string>
+    <string name="pull_to_load_more">上拉加载更多</string>
+    <string name="refresh_icon">刷新动画</string>
 
+    <string name="location_icon">坐标图</string>
+    <string name="avatar">头像</string>
+    <string name="like_icon">点赞图标</string>
 </resources>

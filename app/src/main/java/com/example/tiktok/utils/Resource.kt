@@ -1,6 +1,6 @@
 package com.example.tiktok.utils
 
-//网络请求的 3 种状态
+//数据状态封装类
 sealed class Resource<T>(
     val data: T? = null,
     val message: String? = null

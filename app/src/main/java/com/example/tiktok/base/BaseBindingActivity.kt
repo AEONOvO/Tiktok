@@ -31,16 +31,6 @@ abstract class BaseBindingActivity<VB : ViewBinding>(
         _binding = null
     }
 
-    //兼容新旧 API 的 getParcelableExtra
-    protected inline fun <reified T : Parcelable> Intent.getParcelableExtraCompat(key: String): T? {
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            getParcelableExtra(key, T::class.java)
-        } else {
-            @Suppress("DEPRECATION")
-            getParcelableExtra(key) as? T
-        }
-    }
-
     //容新旧 API 的 getParcelableArrayListExtra
     protected inline fun <reified T : Parcelable> Intent.getParcelableArrayListExtraCompat(key: String): ArrayList<T>? {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
@@ -51,13 +41,4 @@ abstract class BaseBindingActivity<VB : ViewBinding>(
         }
     }
 
-    //兼容新旧 API 的 getSerializableExtra
-    protected inline fun <reified T : java.io.Serializable> Intent.getSerializableExtraCompat(key: String): T? {
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            getSerializableExtra(key, T::class.java)
-        } else {
-            @Suppress("DEPRECATION")
-            getSerializableExtra(key) as? T
-        }
-    }
 }

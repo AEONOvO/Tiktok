@@ -3,11 +3,9 @@ pluginManagement {
         // 配置插件仓库（用于下载Gradle插件，如Android、Kotlin插件）
         maven { url = uri("https://mirrors.cloud.tencent.com/maven/") }
         maven { url = uri("https://mirrors.cloud.tencent.com/gradle/") }
-
         maven { url = uri("https://maven.aliyun.com/repository/public") }
         maven { url = uri("https://maven.aliyun.com/repository/google") }
         maven { url = uri("https://maven.aliyun.com/repository/gradle-plugin") }
-
         maven { url = uri("https://jitpack.io")}
         google()
         mavenCentral()
@@ -30,5 +28,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "tiktok"
+rootProject.name = "Tiktok"
 include(":app")

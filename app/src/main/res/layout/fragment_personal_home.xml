@@ -33,216 +33,21 @@
                     <ImageView
                         android:id="@+id/ivBg"
                         android:layout_width="match_parent"
-                        android:layout_height="200dp"
-                        android:contentDescription="@string/user_background_image"
+                        android:layout_height="400dp"
                         android:scaleType="centerCrop"
-                        tools:src="@drawable/personal_home_background" />
+                        android:contentDescription="@string/user_background_image"
+                        tools:src="@drawable/personal_home_background"/>
 
-                    <LinearLayout
-                        xmlns:app="http://schemas.android.com/apk/res-auto"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical"
-                        android:layout_marginTop="100dp"
-                        xmlns:android="http://schemas.android.com/apk/res/android">
-
-                        <RelativeLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="100dp">
-                            <com.example.tiktok.ui.view.CircleImageView
-                                android:id="@+id/ivHead"
-                                android:layout_width="100dp"
-                                android:layout_height="100dp"
-                                app:es_shape_type="round"
-                                android:layout_marginStart="20dp"
-                                android:scaleType="centerCrop"
-                                android:layout_centerVertical="true"/>
-
-                            <TextView
-                                android:id="@+id/tv_add_focus"
-                                android:layout_width="160dp"
-                                android:layout_height="40dp"
-                                android:text="@string/follow"
-                                android:textColor="@color/white"
-                                android:textSize="15sp"
-                                android:gravity="center"
-                                android:layout_marginEnd="4dp"
-                                android:layout_centerVertical="true"
-                                android:layout_toStartOf="@id/rl_dropdown"
-                                android:background="@drawable/shape_round_red"/>
-
-                            <RelativeLayout
-                                android:id="@+id/rl_dropdown"
-                                android:layout_width="42dp"
-                                android:layout_height="42dp"
-                                android:background="@drawable/shape_round_half_white"
-                                android:layout_centerVertical="true"
-                                android:layout_marginEnd="12dp"
-                                android:layout_alignParentEnd="true">
-
-                                <ImageView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_centerInParent="true"
-                                    android:background="@mipmap/ic_down_arrow" />
-                            </RelativeLayout>
-                        </RelativeLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical"
-                            android:background="@color/color_bg_theme"
-                            android:paddingLeft="12dp"
-                            android:paddingRight="12dp"
-                            android:paddingBottom="12dp">
-
-                            <TextView
-                                android:id="@+id/tvNickname"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/example_nickname"
-                                android:textColor="@color/white"
-                                android:textSize="25sp"/>
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:textColor="@color/white"
-                                android:text="@string/example_douyin_id"
-                                android:textSize="12sp"
-                                android:layout_marginTop="8dp"/>
-
-                            <View
-                                android:layout_width="match_parent"
-                                android:layout_height="0.5dp"
-                                android:background="#2fff"
-                                android:layout_marginTop="10dp"/>
-
-                            <TextView
-                                android:id="@+id/tvSign"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/default_signature"
-                                android:textColor="@color/white"
-                                android:textSize="14sp"
-                                android:layout_marginTop="15dp"/>
-
-                            <LinearLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="12dp">
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:background="@drawable/shape_round_half_white"
-                                    android:text="@string/example_age"
-                                    android:paddingLeft="5dp"
-                                    android:paddingRight="5dp"
-                                    android:paddingTop="2dp"
-                                    android:paddingBottom="2dp"
-                                    android:textSize="12sp"
-                                    android:textColor="@color/color_tag"/>
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:background="@drawable/shape_round_half_white"
-                                    android:text="@string/example_location"
-                                    android:paddingLeft="5dp"
-                                    android:paddingRight="5dp"
-                                    android:paddingTop="2dp"
-                                    android:paddingBottom="2dp"
-                                    android:layout_marginStart="5dp"
-                                    android:textSize="12sp"
-                                    android:textColor="@color/color_tag"/>
-                            </LinearLayout>
-
-                            <LinearLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="20dp">
-
-                                <LinearLayout
-                                    android:id="@+id/ll_likes_received"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content">
-
-                                    <TextView
-                                        android:id="@+id/tvGetLikeCount"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:text="@string/example_likes"
-                                        android:textColor="@color/white"
-                                        android:textSize="16sp"/>
-
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:text="@string/likes_received"
-                                        android:textColor="@color/color_tag"
-                                        android:textSize="14sp"
-                                        android:layout_marginEnd="15dp"/>
-                                </LinearLayout>
-
-                                <LinearLayout
-                                    android:id="@+id/ll_focus"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content">
-
-                                    <TextView
-                                        android:id="@+id/tv_focus_count"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:text="@string/example_following"
-                                        android:textColor="@color/white"
-                                        android:textSize="16sp"
-                                        />
-
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:text="@string/following"
-                                        android:textColor="@color/color_tag"
-                                        android:textSize="14sp"/>
-                                </LinearLayout>
-
-                                <LinearLayout
-                                    android:id="@+id/ll_fans"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content">
-
-                                    <TextView
-                                        android:id="@+id/tv_fans_count"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:text="@string/example_followers"
-                                        android:textColor="@color/white"
-                                        android:textSize="16sp"
-                                        android:layout_marginStart="15dp"/>
-
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:text="@string/followers"
-                                        android:textColor="@color/color_tag"
-                                        android:textSize="14sp"/>
-                                </LinearLayout>
-                            </LinearLayout>
-                        </LinearLayout>
-                    </LinearLayout>
+                    <include
+                        layout="@layout/personal_home_header"
+                        android:id="@+id/home_header"/>
                 </RelativeLayout>
 
                 <androidx.appcompat.widget.Toolbar
                     android:id="@+id/toolbar"
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
-                    app:layout_collapseMode="pin"
-                    app:contentInsetStart="0dp"
-                    app:contentInsetStartWithNavigation="0dp"
-                    app:contentInsetEnd="0dp">
-
+                    app:layout_collapseMode="pin">
 
                     <RelativeLayout
                         android:layout_width="match_parent"
@@ -255,8 +60,6 @@
                             android:src="@mipmap/return_white"
                             android:background="@drawable/shape_circle_half_white"
                             android:padding="8dp"
-                            android:layout_marginStart="10dp"
-                            android:layout_alignParentStart="true"
                             android:layout_centerVertical="true"
                             android:contentDescription="@string/back_button"
                             tools:ignore="RtlHardcoded"/>

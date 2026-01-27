@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -18,13 +19,13 @@
         app:use_controller="false"
         app:surface_type="surface_view"/>
 
-    <!-- 封面图（加载中显示） -->
+    <!-- 封面 -->
     <ImageView
         android:id="@+id/iv_cover"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="centerCrop"
-        android:transitionName="shared_cover"/>
+        android:visibility="visible" />
 
     <!-- 双击点赞动画层 -->
     <com.example.tiktok.ui.view.LikeAnimationView
@@ -97,9 +98,10 @@
                 android:id="@+id/iv_like"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/icon_like_fill"
+                android:textSize="32sp"
                 android:textColor="@color/white"
-                android:textSize="32sp" />
+                android:layout_centerInParent="true"
+                android:text="@string/icon_like_fill" />
 
         </RelativeLayout>
 
@@ -233,9 +235,10 @@
 
         <!-- 音乐 -->
         <com.example.tiktok.ui.view.MarqueeTextView
+            android:id="@+id/tv_marquee"
             android:layout_width="180dp"
             android:layout_height="wrap_content"
-            android:text=" @用户名 创作的原声 - 用户名"
+            android:text=""
             android:textColor="@color/white"
             android:textSize="14sp"
             android:ellipsize="marquee"

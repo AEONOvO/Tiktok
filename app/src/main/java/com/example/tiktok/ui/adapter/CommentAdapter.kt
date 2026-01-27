@@ -7,7 +7,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.tiktok.R
-import android.util.Log
 import com.example.tiktok.data.model.CommentBean
 import com.example.tiktok.databinding.ItemCommentBinding
 
@@ -19,8 +18,6 @@ class CommentAdapter(
 
     // 创建评论 Item 的视图
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CommentViewHolder {
-        Log.d("CommentAdapter", "onCreateViewHolder 调用")
-
         val binding = ItemCommentBinding.inflate(
             LayoutInflater.from(parent.context),
             parent,
@@ -31,36 +28,14 @@ class CommentAdapter(
 
     //将评论数据绑定到 ViewHolder
     override fun onBindViewHolder(holder: CommentViewHolder, position: Int) {
-        Log.d("CommentAdapter", "onBindViewHolder 调用，position: $position")
-        holder.bind(commentList[position], position)
+        holder.bind(commentList[position])
     }
 
-    override fun getItemCount(): Int {
-        Log.d("CommentAdapter", "getItemCount: ${commentList.size}")
-        return commentList.size
-    }
-
-    @SuppressLint("NotifyDataSetChanged")
-    fun submitList(newList: List<CommentBean>?) {
-        Log.d("CommentAdapter", "submitList 调用，数量: ${newList?.size ?: 0}")
-
-        commentList.clear()
-        if (newList != null) {
-            commentList.addAll(newList)
-        }
-
-        Log.d("CommentAdapter", "当前列表数量: ${commentList.size}")
-
-        notifyDataSetChanged()
-
-        Log.d("CommentAdapter", "notifyDataSetChanged 已调用")
-    }
-
-
+    //缓存视图控件、绑定评论数据
     inner class CommentViewHolder(val binding: ItemCommentBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(comment: CommentBean, position: Int) {
+        fun bind(comment: CommentBean) {
             with(binding) {
                 // 加载头像
                 Glide.with(ivHead.context)
@@ -76,11 +51,7 @@ class CommentAdapter(
                 tvLikecount.text = formatCount(comment.likeCount)
 
                 // 设置点赞图标颜色
-                val likeIconView = binding.root.findViewById<com.example.tiktok.ui.view.IconFontTextView>(
-                    R.id.ll_like  // item_comment.xml 中的 ID
-                )
-
-                likeIconView?.setTextColor(
+                llLike.setTextColor(
                     if (comment.isLiked) {
                         root.context.getColor(R.color.red)
                     } else {
@@ -88,14 +59,14 @@ class CommentAdapter(
                     }
                 )
 
-                // 点击整个评论 Item
-                root.setOnClickListener {
+                // 点击点赞图标
+                llLike.setOnClickListener {
                     val currentPosition = bindingAdapterPosition
                     if (currentPosition != RecyclerView.NO_POSITION) {
+                        // 触发回调
                         onLikeClick(comment, currentPosition)
                     }
                 }
-                Log.d("CommentAdapter", "绑定完成 [$position]")
             }
         }
 
@@ -107,5 +78,22 @@ class CommentAdapter(
                 else -> count.toString()
             }
         }
+    }
+
+    //返回评论列表的大小
+    override fun getItemCount(): Int {
+        return commentList.size
+    }
+
+    //更新评论列表
+    @SuppressLint("NotifyDataSetChanged")
+    fun submitList(newList: List<CommentBean>?) {
+        commentList.clear()
+        if (newList != null) {
+            commentList.addAll(newList)
+        }
+
+        // 通知 RecyclerView 数据已更新
+        notifyDataSetChanged()
     }
 }

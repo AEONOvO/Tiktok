@@ -28,10 +28,10 @@ class LikeAnimationView @JvmOverloads constructor(
 
     private var gestureDetector: GestureDetector? = null
 
-    /** 爱心图片大小（dp 转 px） */
+    //爱心图片大小（dp 转 px）
     private val likeViewSize = (100 * context.resources.displayMetrics.density).toInt()
 
-    /** 随机旋转角度 */
+    // 随机旋转角度
     private val angles = intArrayOf(-30, 0, 30)
 
     private var onPlayPauseListener: OnPlayPauseListener? = null
@@ -45,60 +45,58 @@ class LikeAnimationView @JvmOverloads constructor(
     @SuppressLint("ClickableViewAccessibility")
     private fun initGestureDetector() {
         gestureDetector = GestureDetector(context, object : GestureDetector.SimpleOnGestureListener() {
-            // 双击事件
+            // 双击事件（300ms 内点击两次）
             override fun onDoubleTap(e: MotionEvent): Boolean {
                 addLikeView(e)
                 onLikeListener?.onLike()
                 return true
             }
 
-            // 单击事件
+            // 单击事件（确认不是双击后触发）
             override fun onSingleTapConfirmed(e: MotionEvent): Boolean {
                 onPlayPauseListener?.onPlayOrPause()
                 return true
             }
         })
 
+        //拦截触摸事件，交给 GestureDetector 处理
         setOnTouchListener { _, event ->
             gestureDetector?.onTouchEvent(event)
             true
         }
     }
 
-    /**
-     * 添加爱心动画
-     */
+    //添加爱心动画
     private fun addLikeView(e: MotionEvent) {
         val imageView = ImageView(context)
         imageView.setImageResource(R.mipmap.ic_like)
         addView(imageView)
 
         val layoutParams = LayoutParams(likeViewSize, likeViewSize)
-        layoutParams.leftMargin = e.x.toInt() - likeViewSize / 2
-        layoutParams.topMargin = e.y.toInt() - likeViewSize
+        layoutParams.leftMargin = e.x.toInt() - likeViewSize / 2        // e.x 是手指点击的横坐标
+        layoutParams.topMargin = e.y.toInt() - likeViewSize             // e.y 是手指点击的纵坐标
         imageView.layoutParams = layoutParams
 
         playAnim(imageView)
     }
 
-    /**
-     * 播放爱心动画
-     */
+    //播放爱心动画
     private fun playAnim(view: View) {
-        val animationSet = AnimationSet(true)
-        val degrees = angles[Random.nextInt(3)]
+        val animationSet = AnimationSet(true)          //容器
+        val degrees = angles[Random.nextInt(3)]                  //随机歪头
 
         // 添加动画效果
-        animationSet.addAnimation(AnimUtils.rotateAnim(0, 0, degrees.toFloat()))
-        animationSet.addAnimation(AnimUtils.scaleAnim(100, 2f, 1f, 0))
-        animationSet.addAnimation(AnimUtils.alphaAnim(0f, 1f, 100, 0))
-        animationSet.addAnimation(AnimUtils.scaleAnim(500, 1f, 1.8f, 300))
-        animationSet.addAnimation(AnimUtils.alphaAnim(1f, 0f, 500, 300))
-        animationSet.addAnimation(AnimUtils.translationAnim(500, 0f, 0f, 0f, -400f, 300))
+        animationSet.addAnimation(AnimUtils.rotateAnim(0, 0, degrees.toFloat()))                                     //旋转
+        animationSet.addAnimation(AnimUtils.scaleAnim(100, 2f, 1f, 0))                                        //缩放
+        animationSet.addAnimation(AnimUtils.alphaAnim(0f, 1f, 100, 0))                             //透明度
+        animationSet.addAnimation(AnimUtils.scaleAnim(500, 1f, 1.8f, 300))                                    //缩放
+        animationSet.addAnimation(AnimUtils.alphaAnim(1f, 0f, 500, 300))                           //透明度
+        animationSet.addAnimation(AnimUtils.translationAnim(500, 0f, 0f, 0f, -400f, 300))        //位移
 
         animationSet.setAnimationListener(object : Animation.AnimationListener {
             override fun onAnimationStart(animation: Animation) {}
 
+            //把 View 从内存和布局里删掉
             override fun onAnimationEnd(animation: Animation) {
                 Handler(Looper.getMainLooper()).post {
                     removeView(view)
@@ -111,30 +109,22 @@ class LikeAnimationView @JvmOverloads constructor(
         view.startAnimation(animationSet)
     }
 
-    /**
-     * 播放/暂停回调接口
-     */
+    //播放/暂停回调接口
     fun interface OnPlayPauseListener {
         fun onPlayOrPause()
     }
 
-    /**
-     * 点赞回调接口
-     */
+    //点赞回调接口
     fun interface OnLikeListener {
         fun onLike()
     }
 
-    /**
-     * 设置单击播放暂停事件
-     */
+    //设置单击播放暂停事件
     fun setOnPlayPauseListener(listener: OnPlayPauseListener?) {
         this.onPlayPauseListener = listener
     }
 
-    /**
-     * 设置双击点赞事件
-     */
+    //设置双击点赞事件
     fun setOnLikeListener(listener: OnLikeListener?) {
         this.onLikeListener = listener
     }
