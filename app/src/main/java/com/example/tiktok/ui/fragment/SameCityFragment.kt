@@ -3,12 +3,16 @@ package com.example.tiktok.ui.fragment
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.core.app.ActivityOptionsCompat
+import androidx.core.util.Pair
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.tiktok.R
 import com.example.tiktok.base.BaseBindingFragment
 import com.example.tiktok.data.model.VideoBean
 import com.example.tiktok.databinding.FragmentSameCityBinding
+import com.example.tiktok.databinding.ItemGridVideoSameCityBinding
+import com.example.tiktok.ui.activity.VideoPlayActivity
 import com.example.tiktok.ui.adapter.SameCityVideoAdapter
 import com.example.tiktok.utils.DataCreate
 import kotlin.random.Random
@@ -20,6 +24,7 @@ class SameCityFragment : BaseBindingFragment<FragmentSameCityBinding>({ Fragment
     private var hasMoreData = true
     private var lastLoadTime = 0L
     private val loadInterval = 1000L
+    private val currentVideos = mutableListOf<VideoBean>()
 
     companion object {
         private const val PAGE_SIZE = 20
@@ -42,7 +47,8 @@ class SameCityFragment : BaseBindingFragment<FragmentSameCityBinding>({ Fragment
 
         adapter = SameCityVideoAdapter(
             context = requireContext(),
-            onItemClick = { _, _ ->
+            onItemClick = { _, position, itemBinding ->
+                startVideoPlayWithTransition(position, itemBinding)
             },
             onAvatarClick = { _, _ ->
             },
@@ -96,6 +102,8 @@ class SameCityFragment : BaseBindingFragment<FragmentSameCityBinding>({ Fragment
 
         binding.recyclerView.postDelayed({
             val mockData = createMockData()
+            currentVideos.clear()
+            currentVideos.addAll(mockData)
             adapter?.clearList()
             adapter?.appendList(mockData)
 
@@ -115,9 +123,29 @@ class SameCityFragment : BaseBindingFragment<FragmentSameCityBinding>({ Fragment
                 return@postDelayed
             }
 
+            currentVideos.addAll(mockData)
             adapter?.appendList(mockData)
             isLoading = false
         }, 500)
+    }
+
+    private fun startVideoPlayWithTransition(position: Int, itemBinding: ItemGridVideoSameCityBinding) {
+        if (position !in currentVideos.indices) {
+            return
+        }
+
+        val coverPair = Pair.create(itemBinding.ivCover as View, "video_cover_$position")
+        val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
+            requireActivity(),
+            coverPair
+        )
+
+        VideoPlayActivity.startWithTransition(
+            requireContext(),
+            ArrayList(currentVideos),
+            position,
+            options.toBundle()
+        )
     }
 
     // 基于 DataCreate 生成随机打乱的模拟数据

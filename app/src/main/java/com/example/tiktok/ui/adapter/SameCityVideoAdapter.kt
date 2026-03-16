@@ -3,6 +3,7 @@ package com.example.tiktok.ui.adapter
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -13,7 +14,7 @@ import java.util.Locale
 
 class SameCityVideoAdapter(
     private val context: Context,
-    private val onItemClick: ((VideoBean, Int) -> Unit)? = null,
+    private val onItemClick: ((VideoBean, Int, ItemGridVideoSameCityBinding) -> Unit)? = null,
     private val onAvatarClick: ((VideoBean, Int) -> Unit)? = null,
     private val onLikeClick: ((VideoBean, Int) -> Unit)? = null
 ) : RecyclerView.Adapter<SameCityVideoAdapter.ViewHolder>() {
@@ -53,10 +54,14 @@ class SameCityVideoAdapter(
 
         // 设置点赞数
         binding.tvLikeCount.text = formatLikeCount(video.likeCount)
+        ViewCompat.setTransitionName(binding.ivCover, "video_cover_$position")
 
         // 点击事件
         binding.root.setOnClickListener {
-            onItemClick?.invoke(video, position)
+            val currentPosition = holder.bindingAdapterPosition
+            if (currentPosition != RecyclerView.NO_POSITION) {
+                onItemClick?.invoke(video, currentPosition, holder.binding)
+            }
         }
 
         binding.llAuthor.setOnClickListener {

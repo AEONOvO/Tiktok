@@ -84,4 +84,12 @@
     <string name="location_icon">坐标图</string>
     <string name="avatar">头像</string>
     <string name="like_icon">点赞图标</string>
+    <string name="message_title">消息</string>
+    <string name="message_like">赞</string>
+    <string name="message_at">\@</string>
+    <string name="message_follow">粉</string>
+    <string name="message_like_notice">赞和收藏</string>
+    <string name="message_at_me">\@我</string>
+    <string name="message_new_follower">新增粉丝</string>
+    <string name="chat_feature_pending">与%s聊天功能待实现</string>
 </resources>

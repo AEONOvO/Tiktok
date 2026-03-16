@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
+import com.bumptech.glide.request.RequestOptions
 import com.example.tiktok.R
 import com.example.tiktok.databinding.ItemGridVideoLikeBinding
 import com.example.tiktok.data.model.VideoBean
@@ -19,20 +20,35 @@ class LikeVideoGridAdapter(
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(video: VideoBean, position: Int) {
-            // 加载封面
-            Glide.with(binding.ivCover)
-                .load(video.coverRes)
-                .transition(DrawableTransitionOptions.withCrossFade())
-                .placeholder(R.drawable.loading)
-                .error(R.drawable.default_error)
-                .into(binding.ivCover)
+            if (video.coverRes != 0) {
+                Glide.with(binding.ivCover)
+                    .load(video.coverRes)
+                    .transition(DrawableTransitionOptions.withCrossFade())
+                    .placeholder(R.drawable.loading)
+                    .error(R.drawable.default_error)
+                    .into(binding.ivCover)
+            } else {
+                Glide.with(binding.ivCover)
+                    .asBitmap()
+                    .load(video.videoRes)
+                    .apply(
+                        RequestOptions()
+                            .frame(0)
+                            .placeholder(R.drawable.loading)
+                            .error(R.drawable.default_error)
+                    )
+                    .into(binding.ivCover)
+            }
 
             // 显示点赞数（修改为使用 tv_like_count）
             binding.tvLikeCount.text = formatCount(video.likeCount)
 
             // 点击事件
             binding.root.setOnClickListener {
-                onItemClick(video, position)
+                val currentPosition = bindingAdapterPosition
+                if (currentPosition != RecyclerView.NO_POSITION) {
+                    onItemClick(videoList[currentPosition], currentPosition)
+                }
             }
         }
 

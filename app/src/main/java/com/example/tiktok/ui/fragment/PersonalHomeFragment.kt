@@ -21,10 +21,12 @@ import com.example.tiktok.ui.adapter.PersonalHomePagerAdapter
 import com.example.tiktok.viewmodel.PersonalHomeViewModel
 import com.example.tiktok.utils.ImageUtils
 import com.example.tiktok.utils.Resource
+import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.yalantis.ucrop.UCrop
 import java.io.File
 import java.util.Locale
+import kotlin.math.min
 
 
 class PersonalHomeFragment : BaseBindingFragment<FragmentPersonalHomeBinding>({ FragmentPersonalHomeBinding.inflate(it) }) {
@@ -32,6 +34,7 @@ class PersonalHomeFragment : BaseBindingFragment<FragmentPersonalHomeBinding>({ 
 
     //临时存储拍照后的照片 URI
     private var tempPhotoUri: Uri? = null
+    private var appBarOffset = 0
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -40,6 +43,7 @@ class PersonalHomeFragment : BaseBindingFragment<FragmentPersonalHomeBinding>({ 
         setupToolbar()              //设置返回按钮和更多按钮
         setupAvatarClick()          //设置头像点击事件
         setupViewPager()            //设置 ViewPager 和 TabLayout
+        setupStretchEffect()
         observeViewModel()          //观察 ViewModel 数据变化
         viewModel.loadUserInfo()    // 加载个人主页用户数据
     }
@@ -122,6 +126,34 @@ class PersonalHomeFragment : BaseBindingFragment<FragmentPersonalHomeBinding>({ 
         }.attach()
     }
 
+    private fun setupStretchEffect() {
+        binding.appbarLayout.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { _, verticalOffset ->
+            appBarOffset = verticalOffset
+        })
+    }
+
+    fun applyBackgroundStretch(distance: Float) {
+        if (appBarOffset != 0 || distance <= 0f) {
+            return
+        }
+        val progress = min(distance / 800f, 0.25f)
+        val scale = 1f + progress
+        binding.ivBg.pivotX = binding.ivBg.width / 2f
+        binding.ivBg.pivotY = 0f
+        binding.ivBg.scaleX = scale
+        binding.ivBg.scaleY = scale
+        binding.ivBg.translationY = distance * 0.35f
+    }
+
+    fun resetBackgroundStretch() {
+        binding.ivBg.animate()
+            .scaleX(1f)
+            .scaleY(1f)
+            .translationY(0f)
+            .setDuration(220)
+            .start()
+    }
+
     // 观察 ViewModel 数据变化
     private fun observeViewModel() {
         // 观察用户信息
@@ -182,8 +214,13 @@ class PersonalHomeFragment : BaseBindingFragment<FragmentPersonalHomeBinding>({ 
 
     // 返回点击事件
     private fun setupToolbar() {
-        binding.ivReturn.setOnClickListener {
-            parentFragmentManager.popBackStack()
+        val showBackButton = parentFragmentManager.backStackEntryCount > 0
+        if (!showBackButton) {
+            binding.ivReturn.visibility = View.GONE
+        } else {
+            binding.ivReturn.setOnClickListener {
+                parentFragmentManager.popBackStack()
+            }
         }
 
         binding.ivMore.setOnClickListener {
@@ -327,4 +364,3 @@ class PersonalHomeFragment : BaseBindingFragment<FragmentPersonalHomeBinding>({ 
         Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
     }
 }
-

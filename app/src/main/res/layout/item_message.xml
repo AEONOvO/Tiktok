@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="78dp"
+    android:background="@color/black"
+    android:paddingStart="14dp"
+    android:paddingTop="10dp"
+    android:paddingEnd="14dp"
+    android:paddingBottom="10dp">
+
+    <com.example.tiktok.ui.view.CircleImageView
+        android:id="@+id/iv_avatar"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_centerVertical="true"
+        android:contentDescription="@string/avatar"
+        android:scaleType="centerCrop"
+        app:es_shape_type="round" />
+
+    <TextView
+        android:id="@+id/tv_nickname"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_toEndOf="@id/iv_avatar"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tv_message"
+        android:layout_width="220dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_nickname"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="6dp"
+        android:layout_toEndOf="@id/iv_avatar"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textColor="#B0B0B0"
+        android:textSize="13sp" />
+
+    <TextView
+        android:id="@+id/tv_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:textColor="#8B8B8B"
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/tv_unread"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@id/tv_time"
+        android:layout_marginTop="6dp"
+        android:background="@drawable/bg_message_unread"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:textSize="11sp"
+        android:textStyle="bold"
+        android:visibility="gone" />
+
+</RelativeLayout>
