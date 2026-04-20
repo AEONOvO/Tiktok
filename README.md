@@ -1,4 +1,4 @@
-# TikTok Android 
+# TikTok Android
 
 这是一个基于 Kotlin 开发的高仿 TikTok (抖音) Android 应用程序。项目采用 MVVM 架构，实现了短视频应用的核心功能，包括视频推荐、播放、个人中心、点赞和评论等。
 
@@ -12,6 +12,7 @@
   * **点赞**: 支持双击点赞和点赞动画 (Lottie)。
   * **评论**: 底部弹窗式评论列表。
 * **图片编辑**: 集成 UCrop 实现头像选择与裁剪功能。
+* **AI 对话 (H5)**: 内置 H5 页面直连模型 API，对话配置可在页面内完成，Home 页悬浮入口打开 WebView。
 
 ## 🛠 技术栈 (Tech Stack)
 
@@ -34,6 +35,7 @@
   * [Room Database](https://developer.android.com/training/data-storage/room): 本地数据库
   * Gson: JSON 解析
 * **Jetpack 组件**: Lifecycle, ViewModel, LiveData, Fragment
+* **内置 H5**: WebView + assets（JSBridge 通信）
 
 ## 📂 项目结构 (Project Structure)
 
@@ -50,6 +52,33 @@ com.example.tiktok
 ├── utils          # 通用工具类
 └── viewmodel      # 业务逻辑 ViewModel
 ```
+
+## 🤖 H5 AI 对话页面
+
+H5 页面位于 `app/src/main/assets/ai/`，可在应用内 WebView 打开。
+
+**入口位置**
+
+* 首页 `HomeFragment` 的悬浮按钮打开 WebView
+* 入口代码：`HomeFragment.setupAiFloat()` -> `AiWebViewActivity`
+
+**配置项**
+
+* Base URL：模型提供方的 API 根地址（如 `https://api.minimaxi.com`）
+* Model：模型名称（如 `MiniMax-M2.7`）
+* API Key：在页面内手动输入
+
+**注意**
+
+* 仅建议用于测试或内网环境，前端直连会暴露 Key。
+* 可勾选“记住我”将配置保存到本地 `localStorage`。
+
+**实现细节（对应代码）**
+
+* Activity：`AiWebViewActivity` 加载 `file:///android_asset/ai/index.html`
+* JSBridge：`AndroidBridge`（复制、关闭、原生 Toast 等）
+* 布局：`activity_ai_webview.xml`（顶部标题 + WebView）
+* Manifest：已注册 `AiWebViewActivity`
 
 ## 🚀 快速开始 (Getting Started)
 
