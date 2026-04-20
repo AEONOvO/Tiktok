@@ -7,6 +7,8 @@ const modelEl = document.getElementById("model");
 const systemEl = document.getElementById("system");
 const sendBtn = document.getElementById("btn-send");
 const clearBtn = document.getElementById("btn-clear");
+const rememberEl = document.getElementById("remember");
+const toggleKeyBtn = document.getElementById("btn-toggle-key");
 
 const storageKey = "ai_chat_config";
 const conversation = [];
@@ -50,17 +52,23 @@ function loadConfig() {
         apiKeyEl.value = data.apiKey || "";
         modelEl.value = data.model || "";
         systemEl.value = data.system || "";
+        rememberEl.checked = Boolean(data.remember);
     } catch (error) {
         console.warn("Config parse error", error);
     }
 }
 
 function saveConfig() {
+    if (!rememberEl.checked) {
+        localStorage.removeItem(storageKey);
+        return;
+    }
     const payload = {
         baseUrl: baseUrlEl.value.trim(),
         apiKey: apiKeyEl.value.trim(),
         model: modelEl.value.trim(),
         system: systemEl.value.trim(),
+        remember: true,
     };
     localStorage.setItem(storageKey, JSON.stringify(payload));
 }
@@ -157,6 +165,12 @@ baseUrlEl.addEventListener("change", saveConfig);
 apiKeyEl.addEventListener("change", saveConfig);
 modelEl.addEventListener("change", saveConfig);
 systemEl.addEventListener("change", saveConfig);
+rememberEl.addEventListener("change", saveConfig);
+toggleKeyBtn.addEventListener("click", () => {
+    const isHidden = apiKeyEl.type === "password";
+    apiKeyEl.type = isHidden ? "text" : "password";
+    toggleKeyBtn.textContent = isHidden ? "隐藏 Key" : "显示 Key";
+});
 
 loadConfig();
 setStatus("就绪", "ok");

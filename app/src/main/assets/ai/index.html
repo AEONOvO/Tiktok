@@ -33,8 +33,15 @@
                 </label>
                 <label class="field">
                     <span>API Key</span>
-                    <input id="api-key" type="password" placeholder="sk-..." />
+                    <input id="api-key" type="password" placeholder="sk-..." autocomplete="off" />
                 </label>
+                <div class="field inline">
+                    <label class="toggle">
+                        <input id="remember" type="checkbox" />
+                        <span>记住我（本地保存）</span>
+                    </label>
+                    <button id="btn-toggle-key" class="btn btn-ghost" type="button">显示 Key</button>
+                </div>
                 <label class="field">
                     <span>System Prompt</span>
                     <textarea id="system" rows="3" placeholder="可选：系统提示词"></textarea>
