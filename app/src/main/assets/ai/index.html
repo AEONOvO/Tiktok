@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>AI 问答</title>
+    <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+    <div class="page">
+        <header class="hero">
+            <div class="badge">AI Chat</div>
+            <h1>H5 直连模型 API</h1>
+            <p>无需跳转页面，直接在 H5 内完成对话。</p>
+            <div class="actions">
+                <button id="btn-native" class="btn">打开原生弹窗</button>
+                <button id="btn-clear" class="btn btn-ghost">清空对话</button>
+            </div>
+        </header>
+
+        <section class="card config">
+            <h2>API 配置</h2>
+            <div class="grid">
+                <label class="field">
+                    <span>Base URL</span>
+                    <input id="base-url" type="text" placeholder="https://api.example.com" />
+                </label>
+                <label class="field">
+                    <span>Model</span>
+                    <input id="model" type="text" placeholder="gpt-4o-mini" />
+                </label>
+                <label class="field">
+                    <span>API Key</span>
+                    <input id="api-key" type="password" placeholder="sk-..." />
+                </label>
+                <label class="field">
+                    <span>System Prompt</span>
+                    <textarea id="system" rows="3" placeholder="可选：系统提示词"></textarea>
+                </label>
+            </div>
+            <div class="hint">使用 OpenAI 兼容接口：{baseUrl}/v1/chat/completions</div>
+        </section>
+
+        <section class="card chat">
+            <div id="messages" class="messages"></div>
+            <div class="composer">
+                <textarea id="input" placeholder="输入你的问题..." rows="3"></textarea>
+                <button id="btn-send" class="btn btn-primary">发送</button>
+            </div>
+            <div id="status" class="status">就绪</div>
+        </section>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+
+</html>

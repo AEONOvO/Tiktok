@@ -11,7 +11,6 @@ class AvatarChooseDialog : BottomSheetDialogFragment() {
 
     private var _binding: DialogAvatarChooseBinding? = null
     private val binding get() = _binding!!
-
     private var listener: OnChooseListener? = null
 
     interface OnChooseListener {

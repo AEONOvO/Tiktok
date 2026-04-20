@@ -2,10 +2,12 @@ package com.example.tiktok.ui.fragment
 
 import android.os.Bundle
 import android.view.View
+import android.content.Intent
 import androidx.fragment.app.Fragment
 import com.example.tiktok.base.BaseBindingFragment
 import com.example.tiktok.base.CommPagerAdapter
 import com.example.tiktok.databinding.FragmentHomeBinding
+import com.example.tiktok.ui.activity.AiWebViewActivity
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import kotlin.collections.ArrayList
@@ -21,6 +23,14 @@ class HomeFragment : BaseBindingFragment<FragmentHomeBinding>({ FragmentHomeBind
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupHomePager()
+        setupAiFloat()
+    }
+
+    private fun setupAiFloat() {
+        binding.tvAiFloat.setOnClickListener {
+            val intent = Intent(requireContext(), AiWebViewActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     private fun setupHomePager() {

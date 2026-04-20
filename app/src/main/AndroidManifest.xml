@@ -1,67 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:ignore="SelectedPhotoAccess">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" tools:ignore="SelectedPhotoAccess">
 
 
     <!-- 相机权限 -->
     <uses-permission android:name="android.permission.CAMERA" />
     <!-- Android 12 及以下使用 READ_EXTERNAL_STORAGE -->
-    <uses-permission
-        android:name="android.permission.READ_EXTERNAL_STORAGE"
-        android:maxSdkVersion="32" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" android:maxSdkVersion="32" />
     <!-- Android 13+ 使用 READ_MEDIA_IMAGES -->
     <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <!-- 相机硬件特性 -->
-    <uses-feature
-        android:name="android.hardware.camera"
-        android:required="false" />
+    <uses-feature android:name="android.hardware.camera" android:required="false" />
 
 
 
-    <application
-        android:name=".application.App"
-        android:icon="@mipmap/launcher"
-        android:label="tiktok"
-        android:roundIcon="@mipmap/launcher"
-        android:supportsRtl="true"
-        tools:ignore="SelectedPhotoAccess"
-        android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+    <application android:name=".application.App" android:icon="@mipmap/launcher" android:label="tiktok" android:roundIcon="@mipmap/launcher" android:supportsRtl="true" tools:ignore="SelectedPhotoAccess" android:theme="@style/Theme.AppCompat.Light.NoActionBar">
 
-        <activity
-            android:name=".ui.activity.MainActivity"
-            android:exported="true">
+        <activity android:name=".ui.activity.MainActivity" android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
-        <activity android:name=".ui.activity.VideoPlayActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
-            tools:ignore="DiscouragedApi,LockedOrientationActivity"
-            android:exported="false"/>
+        <activity android:name=".ui.activity.VideoPlayActivity" android:screenOrientation="portrait" android:theme="@style/Theme.AppCompat.Light.NoActionBar" tools:ignore="DiscouragedApi,LockedOrientationActivity" android:exported="false"/>
+
+        <activity android:name=".ui.activity.AiWebViewActivity" android:exported="false" />
 
         <!-- 图片裁剪 -->
-        <activity
-            android:name="com.yalantis.ucrop.UCropActivity"
-            android:screenOrientation="fullSensor"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
-            android:exported="false"
-            tools:ignore="DiscouragedApi" />
+        <activity android:name="com.yalantis.ucrop.UCropActivity" android:screenOrientation="fullSensor" android:theme="@style/Theme.AppCompat.Light.NoActionBar" android:exported="false" tools:ignore="DiscouragedApi" />
 
         <!-- 安全共享文件 -->
-        <provider
-            android:name="androidx.core.content.FileProvider"
-            android:authorities="${applicationId}.FileProvider"
-            android:exported="false"
-            android:grantUriPermissions="true">
-            <meta-data
-                android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/file_paths" />
+        <provider android:name="androidx.core.content.FileProvider" android:authorities="${applicationId}.FileProvider" android:exported="false" android:grantUriPermissions="true">
+            <meta-data android:name="android.support.FILE_PROVIDER_PATHS" android:resource="@xml/file_paths" />
         </provider>
 
     </application>
